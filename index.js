@@ -13,18 +13,32 @@ function getParks(code){
   
   let maxResults = $('#js-max-results').val();
   let requestUrl = `${searchURL}?stateCode=${stateCodeStr}&api_key=${apiKey}&limit=${maxResults}`;
-  fetch(requestUrl,{
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((response)=>response.json()).then((json)=>{
-    console.log(json);
-  })
-    .catch(err=>console.log(err));
-}
-
-function displayResults(){
   
+  fetch(requestUrl)
+    .then(code => {
+      if (code.ok) {
+        return code.json();
+      }
+      throw new Error(code.statusText);
+    })
+    .then(responseJson => displayResults(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
+ 
+
+function displayResults(responseJson){
+  console.log(responseJson);
+  $('#results-list').empty();
+  for(let i=0; i<responseJson.data.length; i++){
+    console.log(responseJson.data[i]);
+    $('#results-list').append(`<li><h3>${responseJson.data[i].fullName}</h3>
+    <p>${responseJson.data[i].description}</p>
+    <a href="${responseJson.data[i].directionsUrl}">Let's go!</a>'
+    </li>`);
+  }
+  $('#results').removeClass('hidden');
 }
 
 function watchForm(){
