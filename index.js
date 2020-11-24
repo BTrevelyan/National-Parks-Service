@@ -7,12 +7,12 @@ function getParks(code){
   const searchURL = 'https://developer.nps.gov/api/v1/parks';
 
   let stateCodes = code.split(',');
-  let stateCodeStr ='';
-  for(let i =0; i< stateCodes.length; i++){
-    stateCodeStr+= `${stateCodes[i].trim().toUpperCase()}`;
-  }
-
-  let requestUrl = `${searchURL}?stateCode=${stateCodeStr}&api_key=${apiKey}`;
+  let stateCodeStr =stateCodes.map(function(str){
+    return str.trim().toUpperCase();
+  }).join(',');
+  
+  let maxResults = $('#js-max-results').val();
+  let requestUrl = `${searchURL}?stateCode=${stateCodeStr}&api_key=${apiKey}&limit=${maxResults}`;
   fetch(requestUrl,{
     headers: {
       'Content-Type': 'application/json',
@@ -21,6 +21,10 @@ function getParks(code){
     console.log(json);
   })
     .catch(err=>console.log(err));
+}
+
+function displayResults(){
+  
 }
 
 function watchForm(){
