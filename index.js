@@ -4,7 +4,7 @@
 
 function getParks(code){
   const apiKey = 'nuYv7aPmsarVk3hCAPng9oYiuxNx1sWzA4i2062U';
-  const searchURL = 'https://developer.nps.gov/api/v1';
+  const searchURL = 'https://developer.nps.gov/api/v1/parks';
 
   let stateCodes = code.split(',');
   let stateCodeStr ='';
@@ -12,7 +12,7 @@ function getParks(code){
     stateCodeStr+= `${stateCodes[i].trim().toUpperCase()}`;
   }
 
-  let requestUrl = `${searchURL}?${stateCodeStr}apiKey=${apiKey}`;
+  let requestUrl = `${searchURL}?stateCode=${stateCodeStr}&api_key=${apiKey}`;
   fetch(requestUrl,{
     headers: {
       'Content-Type': 'application/json',
